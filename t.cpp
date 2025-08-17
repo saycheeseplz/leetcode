@@ -1,20 +1,33 @@
 class Solution
 {
 public:
-    int combinationSum4(vector<int> &nums, int target)
+    int lengthLongestPath(string input)
     {
-        vector<unsigned long long> dp(target + 1, 0);
-        dp[0] = 1;
-        for (int i = 1; i <= target; i++)
+        unordered_map<int, int> depth_len; // depth -> total length up to that depth
+        depth_len[0] = 0;
+        int max_len = 0;
+
+        stringstream ss(input);
+        string line;
+        while (getline(ss, line, '\n'))
         {
-            for (int num : nums)
+            int depth = 0;
+            while (line[depth] == '\t')
+                depth++; // đếm \t
+
+            string name = line.substr(depth);
+            if (name.find('.') != string::npos)
             {
-                if (i >= num)
-                {
-                    dp[i] += dp[i - num];
-                }
+                // là file -> update max_len
+                max_len = max(max_len, depth_len[depth] + (int)name.size());
+            }
+            else
+            {
+                // là folder -> lưu độ dài để sau dùng
+                depth_len[depth + 1] = depth_len[depth] + name.size() + 1; // +1 cho '/'
             }
         }
-        return dp[target];
+
+        return max_len;
     }
 };
