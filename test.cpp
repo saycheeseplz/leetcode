@@ -1,9 +1,8 @@
-<<<<<<< HEAD
+
 /*
 Author : @wuan
 Link :
 */
-=======
 class Solution
 {
 public:
@@ -11,7 +10,6 @@ public:
     {
         int slow = nums[0];
         int fast = nums[0];
->>>>>>> memo
 
         // Bước 1: Gặp nhau trong chu kỳ
         do
@@ -30,11 +28,9 @@ public:
 
         return slow;
     }
-<<<<<<< HEAD
     string s = to_string(pull) + "A" + to_string(cow) + "B";
     return s;
-}
-int main()
+} int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
@@ -42,6 +38,5 @@ int main()
     cout << getHint("1807", "7810");
     return 0;
 }
-=======
-};
->>>>>>> memo
+}
+;
