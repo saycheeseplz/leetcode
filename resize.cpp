@@ -8,8 +8,8 @@ public:
 
         int len = path.length();
         path += to_string(root->val);
-
         if (!root->left && !root->right)
+
         {
             result.push_back(path);
         }

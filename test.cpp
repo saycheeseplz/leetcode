@@ -1,36 +1,36 @@
+<<<<<<< HEAD
 /*
 Author : @wuan
 Link :
 */
-
-#include <bits/stdc++.h>
-using namespace std;
-#define ll long long
-#define pi pair<ll, ll>
-#define fi first
-#define se second
-#define endl '\n'
-string getHint(string secret, string guess)
+=======
+class Solution
 {
-    int pull = 0;
-    int cow = 0;
-    int a[10] = {0};
-    for (int i = 0; i < secret.size(); i++)
+public:
+    int findDuplicate(vector<int> &nums)
     {
-        a[secret[i] - '0']++;
-        if (secret[i] == guess[i])
+        int slow = nums[0];
+        int fast = nums[0];
+>>>>>>> memo
+
+        // Bước 1: Gặp nhau trong chu kỳ
+        do
         {
-            pull++;
-        }
-    }
-    for (int i = 0; i < guess.size(); i++)
-    {
-        if (a[guess[i] - '0'] > 0)
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while (slow != fast);
+
+        // Bước 2: Tìm điểm bắt đầu chu kỳ (chính là số bị lặp)
+        slow = nums[0];
+        while (slow != fast)
         {
-            cow++;
-            a[guess[i] - '0']--;
+            slow = nums[slow];
+            fast = nums[fast];
         }
+
+        return slow;
     }
+<<<<<<< HEAD
     string s = to_string(pull) + "A" + to_string(cow) + "B";
     return s;
 }
@@ -42,3 +42,6 @@ int main()
     cout << getHint("1807", "7810");
     return 0;
 }
+=======
+};
+>>>>>>> memo
