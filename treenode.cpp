@@ -42,18 +42,28 @@ int rob(TreeNode *root)
     }
     return cur;
 }
+int sumOfLeftLeaves(TreeNode *root)
+{
+    if (!root)
+    {
+        return 0;
+    }
+    if (root->left != nullptr && root->left->left == nullptr && root->left->right == nullptr)
+    {
+        return root->left->val;
+    }
+    return sumOfLeftLeaves(root->left) + sumOfLeftLeaves(root->right);
+}
 int main()
 {
     ios_base::sync_with_stdio(0);
     cin.tie(NULL);
     cout.tie(NULL);
     TreeNode *root = new TreeNode(3);
-    root->left = new TreeNode(4);
-    root->right = new TreeNode(5);
-    root->left->left = new TreeNode(1);
-    root->left->right = new TreeNode(3);
-    root->right->right = new TreeNode(1);
-
-    cout << rob(root);
+    root->left = new TreeNode(9);
+    root->right = new TreeNode(20);
+    root->right->left = new TreeNode(15);
+    root->right->right = new TreeNode(7);
+    cout << sumOfLeftLeaves(root);
     return 0;
 }
