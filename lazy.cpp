@@ -1,65 +1,48 @@
-/*
-Author : @wuan
-Link :
-*/
-
-#include <bits/stdc++.h>
-using namespace std;
-#define ll long long
-#define pi pair<ll, ll>
-#define fi first
-#define se second
-#define endl '\n'
-
 class Solution
 {
 public:
-    int minMutation(string start, string end, vector<string> &bank)
+    int point(vector<pair<int, int>> start, int l, int r, int target)
     {
-        unordered_set<string> dict(bank.begin(), bank.end());
-        if (!dict.count(end))
-            return -1;
-
-        queue<pair<string, int>> q;
-        q.push({start, 0});
-        vector<char> choices = {'A', 'C', 'G', 'T'};
-
-        while (!q.empty())
+        while (l < r)
         {
-            auto [gene, step] = q.front();
-            q.pop();
-            if (gene == end)
-                return step;
-
-            for (int i = 0; i < gene.size(); i++)
+            int m = (l + r) / 2;
+            if (target == start[m].first)
             {
-                char old = gene[i];
-                for (char c : choices)
-                {
-                    if (c == old)
-                        continue;
-                    gene[i] = c;
-                    if (dict.count(gene))
-                    {
-                        q.push({gene, step + 1});
-                        dict.erase(gene);
-                    }
-                }
-                gene[i] = old;
+                return start[m].second;
+            }
+            else if (target < start[m].first)
+            {
+                r = m;
+            }
+            else
+            {
+                l = m + 1;
             }
         }
-        return -1;
+        return l;
+    }
+    vector<int> findRightInterval(vector<vector<int>> &intervals)
+
+    {
+        vector<pair<int, int>> start;
+        int n = intervals.size();
+        for (int i = 0; i < n; i++)
+        {
+            start.push_back({intervals[i][0], i});
+        }
+        sort(start.begin(), start.end());
+        vector<int> result;
+        for (int i = 0; i < n; i++)
+        {
+            if (intervals[i][1] > start[n - 1].first)
+            {
+                result.push_back(-1);
+            }
+            else
+            {
+                result.push_back(point(start, 0, n - 1, intervals[i][1]));
+            }
+        }
+        return result;
     }
 };
-
-int main()
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    Solution b;
-    vector<string> bank({"AACCGGTA", "AACCGCTA", "AAACGGTA"});
-    cout << b.minMutation("AACCGGTT", "AAACGGTA", bank);
-
-    return 0;
-}
