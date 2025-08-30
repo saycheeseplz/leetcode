@@ -1,45 +1,69 @@
-class Solution
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec
 {
 public:
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
+    // Encodes a tree to a single string.
+
+    string serialize(TreeNode *root)
     {
-        stack<int> s1, s2;
+        if (!root)
+            return "";
+        string s = to_string(root->val);
+        s += to_string(serialize(root->left));
+        s += to_string(serialize(root->right));
+        return s;
+    }
 
-        while (l1)
+    // Decodes your encoded data to tree.
+
+    int depth_min(TreeNode *root)
+    {
+        return 1 + min(depth_min(root->left), depth_min(root->right));
+    }
+    void build(TreeNode *&root, int x)
+    {
+        if (!root)
         {
-            s1.push(l1->val);
-            l1 = l1->next;
+            TreeNode *temp = new TreeNode(x);
+            temp->right = nullptr;
+            temp->left = nullptr;
+            root = temp;
         }
-        while (l2)
+        else
         {
-            s2.push(l2->val);
-            l2 = l2->next;
-        }
-
-        int carry = 0;
-        ListNode *head = nullptr;
-
-        while (!s1.empty() || !s2.empty() || carry)
-        {
-            int x = 0;
-            if (!s1.empty())
+            int l = depth_min(root->left);
+            int r = depth_min(root->right);
+            if (l == r)
             {
-                x += s1.top();
-                s1.pop();
+                build(root->left, x);
             }
-            if (!s2.empty())
-            {
-                x += s2.top();
-                s2.pop();
-            }
-            x += carry;
-            carry = x / 10;
-
-            ListNode *node = new ListNode(x % 10);
-            node->next = head;
-            head = node;
+            else
+                build(root->right, x);
         }
-
-        return head;
+    }
+    TreeNode *deserialize(string data)
+    {
+        TreeNode *root = nullptr;
+        for (int i = 0; i < data.size(); i++)
+        {
+            int x = (data[i] - '0');
+            build(root, x);
+        }
+        return root;
     }
 };
+
+// Your Codec object will be instantiated and called as such:
+// Codec* ser = new Codec();
+// Codec* deser = new Codec();
+// string tree = ser->serialize(root);
+// TreeNode* ans = deser->deserialize(tree);
+// return ans;
