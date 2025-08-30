@@ -1,49 +1,45 @@
-/*
-Author : @wuan
-Link :
-*/
-
-#include <bits/stdc++.h>
-using namespace std;
-#define ll long long
-#define pi pair<ll, ll>
-#define fi first
-#define se second
-#define endl '\n'
 class Solution
 {
 public:
-    vector<int> findDuplicates(vector<int> &nums)
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
     {
-        vector<int> result;
-        for (int num : nums)
+        stack<int> s1, s2;
+
+        while (l1)
         {
-            int idx = nums[abs(num) - 1];
-            if (idx < 0)
-            {
-                result.push_back(abs(num));
-            }
-            else
-            {
-                nums[abs(num) - 1] = idx * -1;
-            }
+            s1.push(l1->val);
+            l1 = l1->next;
         }
-        return result;
+        while (l2)
+        {
+            s2.push(l2->val);
+            l2 = l2->next;
+        }
+
+        int carry = 0;
+        ListNode *head = nullptr;
+
+        while (!s1.empty() || !s2.empty() || carry)
+        {
+            int x = 0;
+            if (!s1.empty())
+            {
+                x += s1.top();
+                s1.pop();
+            }
+            if (!s2.empty())
+            {
+                x += s2.top();
+                s2.pop();
+            }
+            x += carry;
+            carry = x / 10;
+
+            ListNode *node = new ListNode(x % 10);
+            node->next = head;
+            head = node;
+        }
+
+        return head;
     }
 };
-int main()
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    Solution b;
-    vector<int> nums({4, 3, 2, 7, 8, 2, 3, 1, 1});
-    vector<int>
-        a = b.findDuplicates(nums);
-    for (int i = 0; i < a.size(); i++)
-    {
-        cout << a[i] << " ";
-    }
-
-    return 0;
-}
