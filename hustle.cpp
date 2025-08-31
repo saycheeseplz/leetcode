@@ -1,19 +1,42 @@
+/*
+Author : @wuan
+Link :
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define pi pair<ll, ll>
+#define fi first
+#define se second
+#define endl '\n'
 class Solution
 {
 public:
-    int findContentChildren(vector<int> &g, vector<int> &s)
+    bool find132pattern(vector<int> &nums)
     {
-        sort(g.begin(), g.end());
-        sort(s.begin(), s.end());
-        int i = 0, j = 0;
-        while (i < g.size() && j < s.size())
+        int n = nums.size();
+        if (n < 3)
+            return false;
+
+        stack<int> st;       // giữ ứng viên cho "2"
+        int third = INT_MIN; // ứng viên cho "3"
+
+        // duyệt từ phải sang trái
+        for (int i = n - 1; i >= 0; i--)
         {
-            if (s[j] >= g[i])
+            if (nums[i] < third)
             {
-                i++; // thỏa mãn, chuyển sang trẻ tiếp theo
+                return true; // nums[i] = "1", third = "3", stack có "2"
             }
-            j++; // cookie đã xét, chuyển sang cookie tiếp theo
+            while (!st.empty() && nums[i] > st.top())
+            {
+                // pop ra và cập nhật "3"
+                third = st.top();
+                st.pop();
+            }
+            st.push(nums[i]); // nums[i] có thể là "2"
         }
-        return i; // số trẻ em được thỏa mãn
+        return false;
     }
 };
