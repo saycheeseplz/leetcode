@@ -1,28 +1,15 @@
 class Solution
 {
 public:
-    bool repeatedSubstringPattern(string s)
+    int hammingDistance(int x, int y)
     {
-        int n = s.size();
-        vector<int> lpf(n, 0);
-        int len = 0;
-        int i;
-        for (i = 1; len = 0; i < n)
+        int z = x ^ y;
+        int count = 0;
+        while (z)
         {
-            if (s[i] == s[len])
-            {
-                lps[i++] = ++len;
-            }
-            else if (len)
-            {
-                len = lps[len - 1];
-            }
-            else
-            {
-                lps[i++] = 0;
-            }
+            count++;
+            z &= (z - 1); // xóa bit 1 thấp nhất
         }
-        int longest = lps[n - 1];
-        return longest > 0 && n % (n - longest) == 0;
+        return count;
     }
 };
