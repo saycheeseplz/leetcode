@@ -3,16 +3,29 @@ class Solution
 public:
     int findRadius(vector<int> &houses, vector<int> &heaters)
     {
-        unordered_set<int> se;
-        int max_heat = heaters[0];
-        int min_heat = heaters[0];
-        for (int i = 0; i < heaters.size(); i++)
+        sort(houses.begin(), houses.end());
+        sort(heaters.begin(), heaters.end());
+
+        int res = 0;
+        for (int house : houses)
         {
-            se.insert(heaters[i]);
+            // tìm vị trí lò sưởi gần nhất so với house bằng binary search
+            auto it = lower_bound(heaters.begin(), heaters.end(), house);
+            int dist1 = INT_MAX, dist2 = INT_MAX;
+
+            if (it != heaters.end())
+            {
+                dist1 = abs(*it - house); // lò sưởi bên phải hoặc trùng
+            }
+            if (it != heaters.begin())
+            {
+                dist2 = abs(*(it - 1) - house); // lò sưởi bên trái
+            }
+
+            int nearest = min(dist1, dist2);
+            res = max(res, nearest);
         }
-        int max_radius = 0;
-        for (int i = 0; i < houses.size(); i++)
-        {
-        }
+
+        return res;
     }
 };
