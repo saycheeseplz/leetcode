@@ -1,38 +1,24 @@
 class Solution
 {
 public:
-    vector<int> findMode(TreeNode *root)
+    vector<int> nextGreaterElements(vector<int> &nums)
     {
-        vector<int> result;
-        TreeNode *prev = nullptr;
-        int count = 0, maxCount = 0;
-        inorder(root, prev, count, maxCount, result);
-        return result;
-    }
+        int n = nums.size();
+        vector<int> res(n, -1); // Khởi tạo kết quả là -1
+        stack<int> st;          // Lưu chỉ số của các phần tử chưa tìm được next greater
 
-    void inorder(TreeNode *node, TreeNode *&prev, int &count, int &maxCount, vector<int> &result)
-    {
-        if (!node)
-            return;
-        inorder(node->left, prev, count, maxCount, result);
-
-        if (prev && prev->val == node->val)
-            count++;
-        else
-            count = 1;
-
-        if (count > maxCount)
-        {
-            maxCount = count;
-            result.clear();
-            result.push_back(node->val);
-        }
-        else if (count == maxCount)
-        {
-            result.push_back(node->val);
+        for (int i = 0; i < 2 * n; ++i)
+        {                    // Duyệt 2 vòng để mô phỏng circular
+            int idx = i % n; // Chỉ số trong mảng gốc
+            while (!st.empty() && nums[st.top()] < nums[idx])
+            {
+                res[st.top()] = nums[idx]; // Gán next greater
+                st.pop();
+            }
+            if (i < n)
+                st.push(i); // Chỉ push vòng đầu tiên
         }
 
-        prev = node;
-        inorder(node->right, prev, count, maxCount, result);
+        return res;
     }
 };
