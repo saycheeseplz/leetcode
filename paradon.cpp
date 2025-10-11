@@ -1,86 +1,140 @@
-/*
-Author : @wuan
-Link :
-*/
-
-#include <bits/stdc++.h>
-using namespace std;
-#define ll long long
-#define pi pair<ll, ll>
-#define fi first
-#define se second
-#define endl '\n'
-vector<vector<int>> dp;
-class Solution
+enum Color
 {
+    red,
+    green,
+    blue
+};
+enum Size
+{
+    small,
+    medium,
+    big
+};
+
+class Toy
+{
+protected:
+    double price;
+
 public:
-    int longestPalindromeSubseq(string s)
+    Toy(double price)
     {
-        int n = s.size();
-        if (n <= 1)
+        this->price = price;
+    }
+
+    virtual void printType() = 0;
+    friend class ToyBox;
+};
+
+class CarToy : public Toy
+{
+private:
+    Color color;
+
+public:
+    CarToy(double price, Color color) : Toy(price)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->price = price;
+        this->color = color;
+    }
+
+    void printType()
+    {
+        cout << "This is a car toy\n";
+    }
+
+    friend class ToyBox;
+};
+
+class PuzzleToy : public Toy
+{
+private:
+    Size size;
+
+public:
+    PuzzleToy(double price, Size size) : Toy(price)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->price = price;
+        this->size = size;
+    }
+
+    void printType()
+    {
+        cout << "This is a puzzle toy\n";
+    }
+
+    friend class ToyBox;
+};
+
+class ToyBox
+{
+private:
+    Toy *toyBox[5];
+    int numberOfItems;
+
+public:
+    ToyBox()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero numberOfItems and nullptr toyBox
+         */
+        for (int i = 0; i < 5; i++)
         {
-            return n;
+            this->toyBox[i] = nullptr;
         }
-        dp = vector<vector<int>>(n, vector<int>(n, 0));
+        this->numberOfItems = 0;
+    }
 
-        for (int len = 1; len <= n; len++)
+    int addItem(const CarToy &carToy)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: function add a new Car toy to the box.
+                 If successfully added, the function returns the current number of toys in the box.
+                 If the box is full, return -1.
+         */
+        if (numberOfItems >= 5)
         {
-            for (int i = 0; i <= n - len; i++)
-            {
-                int j = len + i - 1;
-                if (len == 1)
-                {
-                    dp[i][j] = 1;
-                }
-                else if (len == 2)
-                {
-                    dp[i][j] = 1;
-                    if (s[i] == s[j])
-                    {
-                        dp[i][j]++;
-                    }
-                }
-                else
-                {
-
-                    if (s[i] == s[j])
-                    {
-                        dp[i][j] = dp[i + 1][j - 1] + 2;
-                    }
-                    else
-                    {
-                        int k = 1;
-                        while (i + k < n && s[k + i] != s[j] && dp[i][i + k] == 1)
-                        {
-                            k++;
-                        }
-                        if (i + k < n && s[k + i] == s[j] && dp[i][i + k] == 1)
-                        {
-                            dp[i][j] = dp[i + 1][j - 1] + 2;
-                        }
-                    }
-                    dp[i][j] = max(dp[i][j], dp[i][j - 1]);
-                }
-            }
+            return -1;
         }
+        else
+        {
+            this->toyBox[numberOfItems]->price = carToy.price;
+            this->numberOfItems += 1;
+            return numberOfItems;
+        }
+    }
 
-        return dp[0][n - 1];
+    int addItem(const PuzzleToy &puzzleToy)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: function add a new Puzzle toy to the box.
+                 If successfully added, the function returns the current number of toys in the box.
+                 If the box is full, return -1.
+         */
+        if (numberOfItems >= 5)
+        {
+            return -1;
+        }
+        else
+        {
+            this->toyBox[numberOfItems]->price = puzzleToy.price;
+            this->numberOfItems += 1;
+            return numberOfItems;
+        }
+    }
+
+    void printBox()
+    {
+        for (int i = 0; i < numberOfItems; i++)
+            toyBox[i]->printType();
     }
 };
-int main()
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    Solution b;
-    cout << b.longestPalindromeSubseq("cbbd") << endl;
-    for (int i = 0; i < dp.size(); i++)
-    {
-        for (int j = 0; j < dp[0].size(); j++)
-        {
-            cout << dp[i][j] << " ";
-        }
-        cout << endl;
-    }
-    return 0;
-}

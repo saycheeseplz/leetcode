@@ -65,30 +65,37 @@ protected:
     int nE, cap;
 
 public:
-    ArrayList():ne(0),cap(0),pD(nullptr){}
-    ~ArrayList(){
-        if(pD)
-        delete pD;
+    ArrayList() : ne(0), cap(0), pD(nullptr) {}
+    ~ArrayList()
+    {
+        if (pD)
+            delete pD;
     }
-    int getSize(){
+    int getSize()
+    {
         return nE;
     }
-    bool isEmpty(){
+    bool isEmpty()
+    {
         return !nE;
     }
-    void clear(){
-        if(pD){
-            delete[]pD;
-            pD=nullptr;
-            nE=cap=0;
+    void clear()
+    {
+        if (pD)
+        {
+            delete[] pD;
+            pD = nullptr;
+            nE = cap = 0;
         }
     }
-    bool insert(const T & val, int idx){
+    bool insert(const T &val, int idx)
+    {
         return true;
-    }  
-    bool insert(T &&, int){
-    return true;
-    } 
+    }
+    bool insert(T &&, int)
+    {
+        return true;
+    }
 
     virtual bool removeIdx(int) = 0;
     virtual bool remove(const T &, function<bool(const T &, const T &)> eq = [](const T &key, const T &val) -> bool
