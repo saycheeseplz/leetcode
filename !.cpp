@@ -1,31 +1,46 @@
-/*
-Author : @wuan
-Link :
-*/
-
-#include <bits/stdc++.h>
-using namespace std;
-#define ll long long
-#define pi pair<ll, ll>
-#define fi first
-#define se second
-#define endl '\n'
-
-int main()
+class AuthenticationManager
 {
-    ios_base::sync_with_stdio(0);
-    cin.tie(NULL);
-    cout.tie(NULL);
+private:
+    unordered_map<string, int> mp;
+    int timeline;
 
-    queue<int> q;
-    for (int i = 0; i < 10; i++)
+public:
+    AuthenticationManager(int timeToLive)
     {
-        q.push(i);
+        this->timeline = timeToLive;
     }
-    while (!q.empty())
+
+    void generate(string tokenId, int currentTime)
     {
-        cout << q.front() << " ";
-        q.pop();
+        mp[tokenId] = currentTime + timeline;
     }
-    return 0;
-}
+
+    void renew(string tokenId, int currentTime)
+    {
+        if (mp[tokenId] >= currentTime)
+        {
+            mp[tokenId] += currentTime;
+        }
+    }
+
+    int countUnexpiredTokens(int currentTime)
+    {
+        int count = 0;
+        for (auto it : mp)
+        {
+            if (it.second >= currentTime)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+};
+
+/**
+ * Your AuthenticationManager object will be instantiated and called as such:
+ * AuthenticationManager* obj = new AuthenticationManager(timeToLive);
+ * obj->generate(tokenId,currentTime);
+ * obj->renew(tokenId,currentTime);
+ * int param_3 = obj->countUnexpiredTokens(currentTime);
+ */
