@@ -1,71 +1,29 @@
-/*
-Author : @wuan
-Link :
-*/
-
-#include <bits/stdc++.h>
-using namespace std;
-#define ll long long
-#define pi pair<ll, ll>
-#define fi first
-#define se second
-#define endl '\n'
-
 class Solution
 {
 public:
-    string predictPartyVictory(string senate)
+    string predictPartyVictory(string s)
     {
-        int count_r = 0;
-        int count_d = 0;
-        queue<char> q;
-        int n = senate.size();
+        queue<int> R, D;
+        int n = s.size();
         for (int i = 0; i < n; i++)
         {
-            q.push(senate[i]);
-        }
-        while (!(q.size() <= count_d || q.size() <= count_r))
-        {
-
-            char c = q.front();
-            q.pop();
-            if (c == 'D')
-            {
-                if (count_d > 0)
-                {
-                    count_d--;
-                    continue;
-                }
-                else
-                {
-                    count_r++;
-                    q.push(c);
-                }
-            }
+            if (s[i] == 'R')
+                R.push(i);
             else
-            {
-                if (count_r > 0)
-                {
-                    count_r--;
-                    continue;
-                }
-                else
-                {
-                    count_d++;
-                    q.push(c);
-                }
-            }
+                D.push(i);
         }
-        return count_d == 0 ? "Dire" : "Radiant";
+
+        while (!R.empty() && !D.empty())
+        {
+            int r = R.front();
+            R.pop();
+            int d = D.front();
+            D.pop();
+            if (r < d)
+                R.push(r + n);
+            else
+                D.push(d + n);
+        }
+        return R.empty() ? "Dire" : "Radiant";
     }
 };
-int main()
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    Solution b;
-    cout << b.predictPartyVictory("RD");
-
-    return 0;
-}
