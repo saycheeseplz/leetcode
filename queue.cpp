@@ -3,39 +3,36 @@ class Solution
 public:
     int longestSubarray(vector<int> &nums, int limit)
     {
-
-        deque<int> dqMax; // decreasing -> front = max
-        deque<int> dqMin; // increasing -> front = min
-
-        int l = 0, ans = 0;
-
-        for (int r = 0; r < nums.size(); r++)
+        queue<int> point_max, point_min;
+        int max_size = 0;
+        int n = nums.size();
+        int l = 0;
+        for (int i = 0; i < n; i++)
         {
-
-            // maintain decreasing deque for max
-            while (!dqMax.empty() && dqMax.back() < nums[r])
-                dqMax.pop_back();
-            dqMax.push_back(nums[r]);
-
-            // maintain increasing deque for min
-            while (!dqMin.empty() && dqMin.back() > nums[r])
-                dqMin.pop_back();
-            dqMin.push_back(nums[r]);
-
-            // while violate
-            while (dqMax.front() - dqMin.front() > limit)
+            while (!point_max.empty() && point_max.back() <= nums[i])
             {
-                // move left forward
-                if (nums[l] == dqMax.front())
-                    dqMax.pop_front();
-                if (nums[l] == dqMin.front())
-                    dqMin.pop_front();
+                point_max.pop();
+            }
+            point_max.push(nums[i]);
+            while (!point_min.empty() && point_min.back() >= nums[i])
+            {
+                point_min.pop();
+            }
+            point_min.push(nums[i]);
+            while (point_max.front() - point_min.front() > limit)
+            {
+                if (point_max.front() == nums[l])
+                {
+                    point_max.pop();
+                }
+                if (point_min.front() == nums[l])
+                {
+                    point_min.pop();
+                }
                 l++;
             }
-
-            ans = max(ans, r - l + 1);
+            max_size = max(max_size, i - l + 1);
         }
-
-        return ans;
+        return max_size;
     }
 };
