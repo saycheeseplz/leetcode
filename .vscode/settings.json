@@ -1,5 +1,14 @@
 {
-    "files.associations": {
-        "iostream": "cpp"
-    }
+  "files.associations": {
+    "iostream": "cpp",
+    "chrono": "cpp",
+    "ranges": "cpp",
+    "variant": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "enabled",
+
+  // ==== PYTHON ====
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.diagnosticMode": "workspace"
 }
