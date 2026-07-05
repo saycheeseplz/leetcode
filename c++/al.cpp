@@ -10,7 +10,8 @@ public:
         dp[0] = nums[0];
         for (int i = 1; i < n; i++)
         {
-            dp[i] = nums[i] + dp[dq.front()];
+            dp[i] = nums[i] + dp[dq.front()];       
+            cout << "hello";
             while (!dq.empty() && dp[dq.back()] < dp[i])
             {
                 dq.pop_back();

@@ -16,8 +16,8 @@ public:
             }
         }
     }
-
-    int countBattleships(vector<vector<char>> &board)
+r
+  int countBattleships(vector<vector<char>> &board)
     {
         int count = 0;
         int n = board.size();

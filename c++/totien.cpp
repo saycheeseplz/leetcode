@@ -1,6 +1,11 @@
 static void merge(T *start, T *middle, T *end)
 {
     int n = middle - start;
+
+
+
+
+
     int m = end - middle;
     T *left = new T[n];
     T *right = new T[m];
